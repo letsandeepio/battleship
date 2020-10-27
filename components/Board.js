@@ -8,11 +8,11 @@ class Board {
     let printedGrid = '';
     printedGrid += generateTopRow(this.width) + '\n';
     for (let i = 0; i < this.height; i++) {
-      let rowStr = i + 1 + ' ';
+      let row = i + 1 + ' ';
       for (let cell of this.grid[i]) {
-        rowStr += cell + ' ';
+        row += cell + ' ';
       }
-      printedGrid += rowStr + '\n';
+      printedGrid += row + '\n';
     }
     return printedGrid;
   }
