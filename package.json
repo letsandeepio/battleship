@@ -25,6 +25,7 @@
     "coverageDirectory": "./.reports"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "figlet": "^1.5.0"
   }
 }
