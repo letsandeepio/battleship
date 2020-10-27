@@ -25,6 +25,26 @@ class Board {
     }
     return true;
   }
+
+  isShipPlaceable(ship) {
+    for (let coord of ship.coords) {
+      if (!this.isValidCoordinate(coord)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  placeShip(ship) {
+    console.log(this.grid);
+    console.log(ship.coords);
+    if (this.isShipPlaceable(ship)) {
+      for (let coord of ship.coords) {
+        console.log(coord);
+        this.grid[coord.y - 1][coord.x - 1] = 'O';
+      }
+    }
+  }
 }
 
 const generateGrid = (width, height) => {
