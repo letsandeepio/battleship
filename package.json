@@ -4,7 +4,8 @@
   "description": "A simple battleship game written in Node.js",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/letsandeepio/battleship/issues"
   },
-  "homepage": "https://github.com/letsandeepio/battleship#readme"
+  "homepage": "https://github.com/letsandeepio/battleship#readme",
+  "devDependencies": {
+    "jest": "^26.6.1"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "./.reports"
+  }
 }
