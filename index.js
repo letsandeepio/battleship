@@ -1,20 +1,28 @@
 const Board = require('./components/Board');
 const Ship = require('./components/Ship');
+const prinTitle = require('./helpers/printTitle');
 
-let board = new Board(8, 8);
+async function main() {
+  console.log(await prinTitle());
 
-console.log(board.isValidCoordinate({ x: 10, y: 10 }));
-console.log(board.isValidCoordinate({ x: 2, y: 2 }));
+  let board = new Board(8, 8);
 
-let ship = new Ship(1, 1, 3, true);
+  console.log(board.isValidCoordinate({ x: 10, y: 10 }));
+  console.log(board.isValidCoordinate({ x: 2, y: 2 }));
 
-board.placeShip(ship);
+  let ship = new Ship(1, 1, 3, true);
 
-console.log(board.getPrintableGrid());
+  board.placeShip(ship);
 
-const { status, message } = board.fireShot({ x: 10, y: 10 });
+  console.log('printing');
+  console.log(board.getPrintableGrid());
 
-console.log('status:' + status);
-console.log('message:' + message);
+  let { status, message } = board.fireShot({ x: 0, y: 0 });
 
-console.log(board.getPrintableGrid());
+  console.log('status:' + status);
+  console.log('message:' + message);
+
+  console.log(board.getPrintableGrid());
+}
+
+main();

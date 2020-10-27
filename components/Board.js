@@ -20,6 +20,38 @@ class Board {
     return printedGrid;
   }
 
+  fireShot({ x, y }) {
+    switch (true) {
+      case !this.isValidCoordinate({ x, y }):
+        return {
+          status: 'invalid',
+          message: 'invalid attack'
+        };
+      case this.grid[x][y] === '-':
+        this.updateCell({ x, y }, '*');
+        return {
+          status: 'miss',
+          message: 'missed the target'
+        };
+      case this.grid[x][y] === 'O':
+        this.updateCell({ x, y }, '!');
+        return {
+          status: 'hit',
+          message: 'successfully hit the target'
+        };
+      case this.grid[x][y] === '!' || this.grid[x][y] === '*':
+        return {
+          status: 'double hit',
+          message: 'already hit this spot before'
+        };
+      default:
+        return {
+          status: 'failed',
+          message: 'error firing shot'
+        };
+    }
+  }
+
   isValidCoordinate({ x, y }) {
     if (x < 0 || x >= this.width) {
       return false;
@@ -39,36 +71,8 @@ class Board {
     return true;
   }
 
-  fireShot({ x, y }) {
-    switch (true) {
-      case !this.isValidCoordinate({ x, y }):
-        return {
-          status: 'invalid',
-          message: 'invalid attack'
-        };
-      case this.grid[y][x] === '-':
-        this.grid[y][x] = '*';
-        return {
-          status: 'miss',
-          message: 'missed the target'
-        };
-      case this.grid[y][x] === 'O':
-        this.grid[y][x] = '!';
-        return {
-          status: 'hit',
-          message: 'successfully hit the target'
-        };
-      case this.grid[y][x] === '!' || this.grid[y][x] === '*':
-        return {
-          status: 'double hit',
-          message: 'already hit this spot before'
-        };
-      default:
-        return {
-          status: 'failed',
-          message: 'error firing shot'
-        };
-    }
+  updateCell({ x, y }, toUpdate) {
+    this.grid[x][y] = toUpdate;
   }
 
   placeShip(ship) {
