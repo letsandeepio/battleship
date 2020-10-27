@@ -1,7 +1,8 @@
 const chalk = require('chalk');
 
-const Board = require('./components/Board');
 const Ship = require('./components/Ship');
+const Game = require('./components/Game');
+
 const prinTitle = require('./helpers/printTitle');
 
 async function main() {
@@ -10,7 +11,10 @@ async function main() {
 
   console.log('Welcome to the batlleship game! This is a two player game');
 
-  let board = new Board(8, 8);
+  const game = new Game();
+  await game.start();
+
+  /*   let board = new Board(8, 8);
 
   console.log(board.isValidCoordinate({ x: 10, y: 10 }));
   console.log(board.isValidCoordinate({ x: 2, y: 2 }));
@@ -27,7 +31,7 @@ async function main() {
   console.log('status:' + status);
   console.log('message:' + message);
 
-  console.log(board.getPrintableGrid());
+  console.log(board.getPrintableGrid()); */
 }
 
 main();
