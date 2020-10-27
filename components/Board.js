@@ -1,9 +1,12 @@
+const convert = require('../helpers/convertToAlphabet');
+
 class Board {
   constructor(width, height) {
     this.height = height;
     this.width = width;
     this.grid = generateGrid(width, height);
   }
+
   getPrintableGrid() {
     let printedGrid = '';
     printedGrid += generateTopRow(this.width) + '\n';
@@ -16,6 +19,7 @@ class Board {
     }
     return printedGrid;
   }
+
   isValidCoordinate({ x, y }) {
     if (x < 0 || x >= this.width) {
       return false;
@@ -36,11 +40,8 @@ class Board {
   }
 
   placeShip(ship) {
-    console.log(this.grid);
-    console.log(ship.coords);
     if (this.isShipPlaceable(ship)) {
       for (let coord of ship.coords) {
-        console.log(coord);
         this.grid[coord.y - 1][coord.x - 1] = 'O';
       }
     }
@@ -61,7 +62,7 @@ const generateGrid = (width, height) => {
 const generateTopRow = (width) => {
   let topRow = '  ';
   for (let i = 0; i < width; i++) {
-    topRow += i + 1 + ' ';
+    topRow += convert.getAlpha(i) + ' ';
   }
   return topRow;
 };
