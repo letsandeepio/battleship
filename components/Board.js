@@ -39,6 +39,38 @@ class Board {
     return true;
   }
 
+  fireShot({ x, y }) {
+    switch (true) {
+      case !this.isValidCoordinate({ x, y }):
+        return {
+          status: 'invalid',
+          message: 'invalid attack'
+        };
+      case this.grid[y][x] === '-':
+        this.grid[y][x] = '*';
+        return {
+          status: 'miss',
+          message: 'missed the target'
+        };
+      case this.grid[y][x] === 'O':
+        this.grid[y][x] = '!';
+        return {
+          status: 'hit',
+          message: 'successfully hit the target'
+        };
+      case this.grid[y][x] === '!' || this.grid[y][x] === '*':
+        return {
+          status: 'double hit',
+          message: 'already hit this spot before'
+        };
+      default:
+        return {
+          status: 'failed',
+          message: 'error firing shot'
+        };
+    }
+  }
+
   placeShip(ship) {
     if (this.isShipPlaceable(ship)) {
       for (let coord of ship.coords) {
