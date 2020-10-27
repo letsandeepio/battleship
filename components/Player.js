@@ -38,7 +38,8 @@ class Player {
       {
         type: 'text',
         name: 'name',
-        message: 'What is your name?'
+        message: 'What is your name?',
+        validate: (value) => (!value ? 'Please enter a name to continue' : true)
       },
       {
         type: 'select',
@@ -79,6 +80,11 @@ class Player {
     );
     if (validation) return this.board.isShipPlaceable(ship);
     this.board.placeShip(ship);
+  }
+
+  requestShot(enemy) {
+    console.log(response.value);
+    this.shipPlacement(response.value);
   }
 }
 

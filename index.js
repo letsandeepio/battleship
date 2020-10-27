@@ -9,9 +9,6 @@ const prinTitle = require('./helpers/printTitle');
 async function main() {
   console.log(await prinTitle());
   console.log(chalk.black.bgGreen.bold('https://github.com/letsandeepio/'));
-
-  console.log('Welcome to the batlleship game! This is a two player game');
-
   const game = new Game();
   await game.start();
 
