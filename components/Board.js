@@ -78,7 +78,7 @@ class Board {
   placeShip(ship) {
     if (this.isShipPlaceable(ship)) {
       for (let coord of ship.coords) {
-        this.grid[coord.y - 1][coord.x - 1] = 'O';
+        this.grid[coord.y][coord.x] = 'O';
       }
     }
   }

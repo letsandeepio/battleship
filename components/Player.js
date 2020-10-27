@@ -1,6 +1,8 @@
 const prompts = require('prompts');
 const Board = require('./Board');
 const settings = require('../helpers/constants');
+const Ship = require('./Ship');
+const convert = require('../helpers/convertToAlphabet');
 
 class Player {
   constructor() {
@@ -22,6 +24,8 @@ class Player {
   async setUp() {
     await this.setPlayerPreferences();
     this.setupPlayerBoard();
+    console.log('\n' + this.board.getPrintableGrid());
+    await this.askShipLocation();
     console.log('\n' + this.board.getPrintableGrid());
   }
 
@@ -52,15 +56,29 @@ class Player {
     this.isShipHorizontal = orientation;
   }
 
-  async placeShip() {
+  async askShipLocation() {
     const response = await prompts({
       type: 'text',
       name: 'value',
       message: 'Where would you like to place your Ship?',
       validate: (value) =>
-        value != 'a1' ? `Please enter valid coordinates` : true
+        !this.shipPlacement(value, true)
+          ? `Please enter valid coordinates.`
+          : true
     });
     console.log(response.value);
+    this.shipPlacement(response.value);
+  }
+
+  //TODO: work on this function for logic
+  shipPlacement(value, validation = false) {
+    const ship = new Ship(
+      convert.toCoordinates(value),
+      settings.SHIP_LENGTH,
+      this.isShipHorizontal
+    );
+    if (validation) return this.board.isShipPlaceable(ship);
+    this.board.placeShip(ship);
   }
 }
 

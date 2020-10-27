@@ -19,8 +19,6 @@ class Game {
     this.player1 = new Player();
     console.log('Player 1 get ready!');
     await this.player1.setUp();
-    console.log(this.player1.name);
-    console.log(this.player1.isShipHorizontal);
   }
 }
 

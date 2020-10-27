@@ -1,5 +1,5 @@
 class Ship {
-  constructor(x, y, length, isHorizontal) {
+  constructor({ x, y }, length, isHorizontal) {
     this.x = x;
     this.y = y;
     this.length = length;
