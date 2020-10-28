@@ -22,6 +22,12 @@ class Game {
     while (!this.isGameOver()) {
       await this.requestShots();
     }
+    console.log(`Awesome! ${this.currentPlayer.name} wins\n`);
+    console.log('Final Battlefield\n');
+    console.log(`~~~~~~${this.player1.name}'s Board~~~\n`);
+    console.log(this.player1.board.getPrintableGrid(true));
+    console.log(`~~~~~~${this.player2.name}'s Board~~~\n`);
+    console.log(this.player2.board.getPrintableGrid(true));
   }
 
   async requestShots() {
@@ -30,7 +36,7 @@ class Game {
     await this.currentPlayer.requestShot(this.targetPlayer);
     console.log(`~~~~~~${this.targetPlayer.name}'s Board~~~\n`);
     console.log(this.targetPlayer.board.getPrintableGrid());
-    this.togglePlayers();
+    if (!this.isGameOver()) this.togglePlayers();
   }
 
   togglePlayers() {
