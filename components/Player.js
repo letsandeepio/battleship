@@ -1,9 +1,7 @@
 const prompts = require('prompts');
-const { settings, userQuestions, shotStatus } = require('../helpers/constants');
-const convert = require('../helpers/convertToAlphabet');
+const { settings, shotStatus } = require('../helpers/constants');
 
 const Board = require('./Board');
-const Ship = require('./Ship');
 
 class Player {
   constructor({ name, isShipHorizontal }) {
@@ -19,33 +17,7 @@ class Player {
     if (this.hitShots === 3) this.isWon = true;
   }
 
-  async setUp() {
-    await this.askShipLocation();
-  }
-
-  async askShipLocation() {
-    const response = await prompts({
-      type: 'text',
-      name: 'value',
-      message: 'Where would you like to place your Ship?',
-      validate: (value) =>
-        !this.shipPlacement(value, true)
-          ? `Please enter valid coordinates.`
-          : true
-    });
-    this.shipPlacement(response.value);
-  }
-
   //TODO: work on this function for logic
-  shipPlacement(value, validation = false) {
-    const ship = new Ship(
-      convert.toCoordinates(value),
-      settings.SHIP_LENGTH,
-      this.isShipHorizontal
-    );
-    if (validation) return this.board.isShipPlaceable(ship);
-    this.board.placeShip(ship);
-  }
 
   async requestShot(enemy) {
     const response = await prompts({

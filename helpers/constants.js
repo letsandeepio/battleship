@@ -33,7 +33,12 @@ const userQuestions = {
         { title: 'Vertical', value: false }
       ]
     }
-  ]
+  ],
+  SHIP_LOCATION: {
+    type: 'text',
+    name: 'shipLocation',
+    message: 'Please enter the target you would like to place your ship?'
+  }
 };
 
 module.exports = { settings, shotStatus, userMessages, userQuestions };
