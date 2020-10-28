@@ -1,5 +1,5 @@
 const prompts = require('prompts');
-const { settings } = require('../helpers/constants');
+const { settings, userQuestions, shotStatus } = require('../helpers/constants');
 const convert = require('../helpers/convertToAlphabet');
 
 const Board = require('./Board');
@@ -26,7 +26,7 @@ class Player {
   }
 
   async setPlayerPreferences() {
-    const { name, orientation } = await prompts(questions.PREFERENCES);
+    const { name, orientation } = await prompts(userQuestions.PREFERENCES);
     this.name = name;
     this.isShipHorizontal = orientation;
   }
@@ -68,7 +68,7 @@ class Player {
 
     const coords = convert.toCoordinates(response.value);
     const { status, message } = enemy.board.registerShot(coords);
-    if (status === 'hit') this.hitShotFired();
+    if (status === shotStatus.HIT) this.hitShotFired();
     console.log(`\n${message}\n`);
   }
 

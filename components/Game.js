@@ -1,12 +1,13 @@
 const Player = require('./Player');
-const prompts = require('prompts');
 
 class Game {
-  constructor() {
+  constructor({ print, ask }) {
     this.player1 = {};
     this.player2 = {};
     this.currentPlayer = {};
     this.targetPlayer = {};
+    this.print = print;
+    this.ask = ask;
   }
 
   isGameOver() {
@@ -14,9 +15,9 @@ class Game {
   }
 
   async start() {
-    console.log('\nWelcome to the battleShip Wars! This is a two player game.');
-    await this.setupPlayers();
-    console.log('\n\nGood Job! Time to fire up the cannons!\n');
+    this.print('\nWelcome to the battleShip Wars! This is a two player game.');
+    this.print('\n\nGood Job! Time to fire up the cannons!\n');
+    /*     await this.setupPlayers();
     this.currentPlayer = this.player1;
     this.targetPlayer = this.player2;
     while (!this.isGameOver()) {
@@ -27,7 +28,7 @@ class Game {
     console.log(`~~~~~~${this.player1.name}'s Board~~~\n`);
     console.log(this.player1.board.getPrintableGrid(true));
     console.log(`~~~~~~${this.player2.name}'s Board~~~\n`);
-    console.log(this.player2.board.getPrintableGrid(true));
+    console.log(this.player2.board.getPrintableGrid(true)); */
   }
 
   async requestShots() {

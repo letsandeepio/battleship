@@ -36,4 +36,4 @@ const userQuestions = {
   ]
 };
 
-module.exports = { settings, shotStatus, userMessages };
+module.exports = { settings, shotStatus, userMessages, userQuestions };
