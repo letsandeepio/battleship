@@ -4,6 +4,10 @@
 
 A Commandline game based on the popular board game written in Node.js
 
+### GamePlay Demo
+
+[![battleship](https://github.com/letsandeepio/battleship/blob/main/documentation/battleship_gameplay.gif?raw=true)](https://github.com/letsandeepio/battleship)
+
 ### Deployment
 
 The game is currently published as npm package and can be run directly by typing below on commandline (node < v10 & npm < v6 is required to be installed)
@@ -18,6 +22,8 @@ The game is currently published as npm package and can be run directly by typing
 - Print gameboard at every round.
 - Let user know if they already hit a spot before.
 - Print victory message with final view of the battlefield with location of ships (boards of both player's)
+
+### Technical Details
 
 ### Gameplay Features
 
