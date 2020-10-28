@@ -8,7 +8,6 @@ describe('testing Board component ', () => {
   test('successfully print the board', () => {
     //getPrintableGrid should return a string of length 171
     const board = new Board(8, 8);
-    console.log(board.getPrintableGrid());
     expect(board.getPrintableGrid().length).toBe(171);
   });
 });
