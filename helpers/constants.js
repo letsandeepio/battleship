@@ -38,6 +38,11 @@ const userQuestions = {
     type: 'text',
     name: 'shipLocation',
     message: 'Please enter the target you would like to place your ship?'
+  },
+  SHOT: {
+    type: 'text',
+    name: 'shotLocation',
+    message: 'Please enter the target you would like to attack?'
   }
 };
 

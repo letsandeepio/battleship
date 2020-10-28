@@ -3,7 +3,7 @@ const Ship = require('./Ship');
 
 const convert = require('../helpers/convertToAlphabet');
 
-const { userQuestions, settings } = require('../helpers/constants');
+const { userQuestions, settings, shotStatus } = require('../helpers/constants');
 
 class Game {
   constructor({ print, ask }) {
@@ -15,42 +15,6 @@ class Game {
     this.ask = ask;
   }
 
-  isGameOver() {
-    return this.player1.isWon || this.player2.isWon;
-  }
-
-  async start() {
-    this.print('\nWelcome to the battleShip Wars! This is a two player game.');
-    this.print('\n\nGood Job! Time to fire up the cannons!\n');
-
-    this.player1 = await this.setupPlayer('Player 1');
-    this.player2 = await this.setupPlayer('Player 2');
-
-    this.currentPlayer = this.player1;
-    this.targetPlayer = this.player2;
-
-    /*  while (!this.isGameOver()) {
-      await this.requestShots();
-    }
-
-
-    console.log(`Awesome! ${this.currentPlayer.name} wins\n`);
-    console.log('Final Battlefield\n');
-    console.log(`~~~~~~${this.player1.name}'s Board~~~\n`);
-    console.log(this.player1.board.getPrintableGrid(true));
-    console.log(`~~~~~~${this.player2.name}'s Board~~~\n`);
-    console.log(this.player2.board.getPrintableGrid(true)); */
-  }
-
-  async requestShots() {
-    console.log('\n===========new round==========\n');
-    console.log(`${this.currentPlayer.name} get ready its your turn!\n`);
-    await this.currentPlayer.requestShot(this.targetPlayer);
-    console.log(`~~~~~~${this.targetPlayer.name}'s Board~~~\n`);
-    console.log(this.targetPlayer.board.getPrintableGrid());
-    if (!this.isGameOver()) this.togglePlayers();
-  }
-
   togglePlayers() {
     this.currentPlayer =
       this.currentPlayer === this.player1 ? this.player2 : this.player1;
@@ -58,14 +22,58 @@ class Game {
       this.targetPlayer === this.player1 ? this.player2 : this.player1;
   }
 
+  isGameOver() {
+    return this.player1.isWon || this.player2.isWon;
+  }
+
+  shipPlacement(value, player, validation = false) {
+    const ship = new Ship(
+      convert.toCoordinates(value),
+      settings.SHIP_LENGTH,
+      player.isShipHorizontal
+    );
+    if (validation) return player.board.isShipPlaceable(ship);
+    player.board.placeShip(ship);
+  }
+
+  async start() {
+    this.print('\nWelcome to the battleShip Wars! This is a two player game.');
+    this.player1 = await this.setupPlayer('Player 1');
+    this.player2 = await this.setupPlayer('Player 2');
+
+    this.print('\n\nGood Job! Time to fire up the cannons!\n');
+
+    this.currentPlayer = this.player1;
+    this.targetPlayer = this.player2;
+
+    while (!this.isGameOver()) {
+      await this.newRound();
+    }
+  }
+
+  async newRound() {
+    this.print('\n===========new round==========\n');
+    this.print(`${this.currentPlayer.name} get ready its your turn!\n`);
+    await this.requestShot();
+    this.print(`~~~~~~${this.targetPlayer.name}'s Board~~~\n`);
+    this.print(this.targetPlayer.board.getPrintableGrid());
+    if (!this.isGameOver()) this.togglePlayers();
+  }
+
   async setupPlayer(playerRoaster) {
     let player = {};
+
     this.print(`\n\n${playerRoaster} get ready!\n=================\n`);
+
     const { name, isShipHorizontal } = await this.ask(
       userQuestions.PREFERENCES
     );
 
-    player = new Player({ name, isShipHorizontal });
+    const boardWidth = settings.WIDTH;
+    const boardHeight = settings.HEIGHT;
+
+    player = new Player({ name, isShipHorizontal, boardWidth, boardHeight });
+
     this.print('\n' + player.board.getPrintableGrid());
 
     const shipLocationWithValidation = {
@@ -77,21 +85,37 @@ class Game {
     };
 
     const { shipLocation } = await this.ask(shipLocationWithValidation);
-
-    console.log(shipLocation);
     this.shipPlacement(shipLocation, player);
-    console.log(player);
     return player;
   }
 
-  shipPlacement(value, player, validation = false) {
-    const ship = new Ship(
-      convert.toCoordinates(value),
-      settings.SHIP_LENGTH,
-      player.isShipHorizontal
-    );
-    if (validation) return player.board.isShipPlaceable(ship);
-    player.board.placeShip(ship);
+  printWinner() {
+    this.print(`Awesome! ${this.currentPlayer.name} wins\n`);
+    this.print('Final Battlefield\n');
+    this.print(`~~~~~~${this.player1.name}'s Board~~~\n`);
+    this.print(this.player1.board.getPrintableGrid(true));
+    this.print(`~~~~~~${this.player2.name}'s Board~~~\n`);
+    this.print(this.player2.board.getPrintableGrid(true));
+  }
+
+  async requestShot() {
+    const shotWithValidation = {
+      ...userQuestions.SHOT,
+      validate: (value) =>
+        this.isFireShotValid(value) ? `Please enter valid coordinates.` : true
+    };
+
+    const { shotLocation } = await this.ask(shotWithValidation);
+
+    const coords = convert.toCoordinates(shotLocation);
+    const { status, message } = this.targetPlayer.board.registerShot(coords);
+    if (status === shotStatus.HIT) this.currentPlayer.hitShotFired();
+    this.print(`\n${message}\n`);
+  }
+
+  isFireShotValid(value) {
+    const coords = convert.toCoordinates(value);
+    return !this.targetPlayer.board.isValidCoordinate(coords);
   }
 }
 
