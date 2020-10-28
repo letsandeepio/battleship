@@ -1,6 +1,6 @@
 {
   "name": "@letsandeepio/battleship",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple battleship game written in Node.js",
   "preferGlobal": true,
   "bin": {

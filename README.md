@@ -50,7 +50,7 @@ See the above “deployment” for running the game without needing to install i
 2. `cd battleship`
 3. `npm install`
 
-Finally, the the below from the root folder of the object to run the game
+Finally, run the the below from the root folder of the project to run the game:
 
 4. `./bin/battleship`
 
