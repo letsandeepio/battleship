@@ -1,4 +1,4 @@
-const convert = require('../helpers/convertToAlphabet');
+const convert = require('../helpers/convertInput');
 const { shotStatus, userMessages } = require('../helpers/constants');
 
 class Board {

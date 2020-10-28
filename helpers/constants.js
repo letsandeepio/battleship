@@ -44,7 +44,8 @@ const userQuestions = {
   SHOT: {
     type: 'text',
     name: 'shotLocation',
-    message: 'Please enter the target cell you would like to attack?a1, d5 etc'
+    message:
+      'Please enter the target cell you would like to attack? e.g a1, d5 etc'
   }
 };
 

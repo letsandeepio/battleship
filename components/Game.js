@@ -1,7 +1,7 @@
 const Player = require('./Player');
 const Ship = require('./Ship');
 
-const convert = require('../helpers/convertToAlphabet');
+const convert = require('../helpers/convertInput');
 
 const { userQuestions, settings, shotStatus } = require('../helpers/constants');
 
@@ -30,6 +30,7 @@ class Game {
   // if validation flag is passed, just return true or false based on if ship can be placed on the board or not
   shipPlacement(value, player, validation = false) {
     const { x, y } = convert.toCoordinates(value);
+    //invalid input
     if (validation) {
       if (isNaN(x) || isNaN(y)) return false;
     }
@@ -38,6 +39,7 @@ class Game {
       settings.SHIP_LENGTH,
       player.isShipHorizontal
     );
+    //ship is not placeable on the board
     if (validation) return player.board.isShipPlaceable(ship);
     player.board.placeShip(ship);
   }
@@ -91,20 +93,20 @@ class Game {
   }
 
   async newRound() {
-    this.print('\n===========new round==========\n');
-    this.print(`${this.currentPlayer.name} get ready its your turn!\n`);
-    await this.requestShot();
-    this.print(`~~~ ${this.targetPlayer.name}'s Board ~~~\n`);
+    this.print('\n========== New Round =========\n');
+    this.print(`${this.currentPlayer.name} get ready! It's your turn!\n`);
+    await this.requestPlayerShot();
+    this.print(`~~~ ${this.targetPlayer.name}'s (Enemy) Board ~~~\n`);
     this.print(this.targetPlayer.board.getPrintableGrid());
     if (!this.isGameOver()) this.togglePlayers();
   }
 
-  async requestShot() {
+  async requestPlayerShot() {
     const shotWithValidation = {
       ...userQuestions.SHOT,
       validate: (value) =>
         this.isFireShotValid(value)
-          ? `Please enter valid taregt cell coordinates. e.g. a1`
+          ? `Please enter valid target cell coordinates. e.g. a1`
           : true
     };
 
@@ -117,16 +119,22 @@ class Game {
   }
 
   isFireShotValid(value) {
-    const coords = convert.toCoordinates(value);
-    return !this.targetPlayer.board.isValidCoordinate(coords);
+    const { x, y } = convert.toCoordinates(value);
+    return (
+      isNaN(x) ||
+      isNaN(y) ||
+      !this.targetPlayer.board.isValidCoordinate({ x, y })
+    );
   }
 
   printWinner() {
-    this.print(`Awesome! ${this.currentPlayer.name} wins\n`);
-    this.print('Final Battlefield\n');
-    this.print(`~~~~~~${this.player1.name}'s Board~~~\n`);
+    this.print(
+      `Awesome! You have sunk the Enemy ship! ${this.currentPlayer.name} wins!\n`
+    );
+    this.print('Final Battlefield View\n==================\n');
+    this.print(`~~~ ${this.player1.name}'s Board ~~~\n`);
     this.print(this.player1.board.getPrintableGrid(true));
-    this.print(`~~~~~~${this.player2.name}'s Board~~~\n`);
+    this.print(`~~~ ${this.player2.name}'s Board ~~~\n`);
     this.print(this.player2.board.getPrintableGrid(true));
   }
 }
