@@ -8,18 +8,13 @@ const Ship = require('./Ship');
 class Player {
   constructor() {
     this.name = '';
-    this.shotsFired = 0;
     this.hitShots = 0;
     this.isShipHorizontal = true;
     this.isWon = false;
     this.board = {};
   }
 
-  fireShot() {
-    this.shotFired += 1;
-  }
-
-  hitShot() {
+  hitShotFired() {
     this.hitShots += 1;
     if (this.hitShots === 3) this.isWon = true;
   }
