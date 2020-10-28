@@ -95,7 +95,7 @@ class Player {
     });
 
     const coords = convert.toCoordinates(response.value);
-    const { status, message } = enemy.board.fireShot(coords);
+    const { status, message } = enemy.board.registerShot(coords);
     if (status === 'hit') this.hitShot();
     console.log(`\n${message}\n`);
   }

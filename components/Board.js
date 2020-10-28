@@ -1,4 +1,5 @@
 const convert = require('../helpers/convertToAlphabet');
+const { shotStatus, userMessages } = require('../helpers/constants');
 
 class Board {
   constructor(width, height) {
@@ -24,29 +25,24 @@ class Board {
     return printedGrid;
   }
 
-  fireShot({ x, y }) {
+  registerShot({ x, y }) {
     switch (true) {
-      case !this.isValidCoordinate({ x, y }):
-        return {
-          status: 'invalid',
-          message: 'invalid attack'
-        };
       case this.grid[y][x] === '-':
         this.updateCell({ x, y }, '*');
         return {
-          status: 'miss',
-          message: 'missed the target'
+          status: shotStatus.MISSED,
+          message: userMessages.MISSED
         };
       case this.grid[y][x] === 'O':
         this.updateCell({ x, y }, '!');
         return {
-          status: 'hit',
-          message: 'successfully hit the target'
+          status: shotStatus.HIT,
+          message: userMessages.HIT
         };
       case this.grid[y][x] === '!' || this.grid[y][x] === '*':
         return {
-          status: 'double hit',
-          message: 'already hit this spot before'
+          status: shotStatus.DOUBLE_HIT,
+          message: userMessages.DOUBLE_HIT
         };
     }
   }
