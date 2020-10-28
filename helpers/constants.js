@@ -16,4 +16,24 @@ const userMessages = {
   DOUBLE_HIT: 'Uh ho! You have hit that spot already!'
 };
 
+const userQuestions = {
+  PREFERENCES: [
+    {
+      type: 'text',
+      name: 'name',
+      message: 'What is your name?',
+      validate: (value) => (!value ? 'Please enter a name to continue' : true)
+    },
+    {
+      type: 'select',
+      name: 'orientation',
+      message: 'How would you liked to place your ship?',
+      choices: [
+        { title: 'Horizontal', value: true },
+        { title: 'Vertical', value: false }
+      ]
+    }
+  ]
+};
+
 module.exports = { settings, shotStatus, userMessages };

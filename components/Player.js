@@ -1,5 +1,5 @@
 const prompts = require('prompts');
-const settings = require('../helpers/constants');
+const { settings } = require('../helpers/constants');
 const convert = require('../helpers/convertToAlphabet');
 
 const Board = require('./Board');
@@ -11,7 +11,7 @@ class Player {
     this.hitShots = 0;
     this.isShipHorizontal = true;
     this.isWon = false;
-    this.board = {};
+    this.board = new Board(settings.WIDTH, settings.HEIGHT);
   }
 
   hitShotFired() {
@@ -21,35 +21,12 @@ class Player {
 
   async setUp() {
     await this.setPlayerPreferences();
-    this.setupPlayerBoard();
     console.log('\n' + this.board.getPrintableGrid());
     await this.askShipLocation();
   }
 
-  setupPlayerBoard() {
-    this.board = new Board(settings.WIDTH, settings.HEIGHT);
-  }
-
   async setPlayerPreferences() {
-    const questions = [
-      {
-        type: 'text',
-        name: 'name',
-        message: 'What is your name?',
-        validate: (value) => (!value ? 'Please enter a name to continue' : true)
-      },
-      {
-        type: 'select',
-        name: 'orientation',
-        message: 'How would you liked to place your ship?',
-        choices: [
-          { title: 'Horizontal', value: true },
-          { title: 'Vertical', value: false }
-        ]
-      }
-    ];
-
-    const { name, orientation } = await prompts(questions);
+    const { name, orientation } = await prompts(questions.PREFERENCES);
     this.name = name;
     this.isShipHorizontal = orientation;
   }
@@ -91,7 +68,7 @@ class Player {
 
     const coords = convert.toCoordinates(response.value);
     const { status, message } = enemy.board.registerShot(coords);
-    if (status === 'hit') this.hitShot();
+    if (status === 'hit') this.hitShotFired();
     console.log(`\n${message}\n`);
   }
 
