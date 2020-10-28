@@ -26,7 +26,7 @@ const userQuestions = {
     },
     {
       type: 'select',
-      name: 'orientation',
+      name: 'isShipHorizontal',
       message: 'How would you liked to place your ship?',
       choices: [
         { title: 'Horizontal', value: true },

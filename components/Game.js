@@ -1,4 +1,5 @@
 const Player = require('./Player');
+const { userQuestions } = require('../helpers/constants');
 
 class Game {
   constructor({ print, ask }) {
@@ -17,8 +18,11 @@ class Game {
   async start() {
     this.print('\nWelcome to the battleShip Wars! This is a two player game.');
     this.print('\n\nGood Job! Time to fire up the cannons!\n');
-    /*     await this.setupPlayers();
-    this.currentPlayer = this.player1;
+
+    this.player1 = await this.setupPlayer('Player 1');
+    this.player2 = await this.setupPlayer('Player 2');
+
+    /*     this.currentPlayer = this.player1;
     this.targetPlayer = this.player2;
     while (!this.isGameOver()) {
       await this.requestShots();
@@ -28,7 +32,7 @@ class Game {
     console.log(`~~~~~~${this.player1.name}'s Board~~~\n`);
     console.log(this.player1.board.getPrintableGrid(true));
     console.log(`~~~~~~${this.player2.name}'s Board~~~\n`);
-    console.log(this.player2.board.getPrintableGrid(true)); */
+    console.log(this.player2.board.getPrintableGrid(true));
   }
 
   async requestShots() {
@@ -37,7 +41,7 @@ class Game {
     await this.currentPlayer.requestShot(this.targetPlayer);
     console.log(`~~~~~~${this.targetPlayer.name}'s Board~~~\n`);
     console.log(this.targetPlayer.board.getPrintableGrid());
-    if (!this.isGameOver()) this.togglePlayers();
+    if (!this.isGameOver()) this.togglePlayers(); */
   }
 
   togglePlayers() {
@@ -49,12 +53,23 @@ class Game {
 
   async setupPlayers() {
     this.player1 = new Player();
-    console.log('\n\nPlayer 1 get ready!\n=================\n');
+
     await this.player1.setUp();
 
     this.player2 = new Player();
-    console.log('\n\nPlayer 2 get ready!\n=================\n');
+
     await this.player2.setUp();
+  }
+
+  async setupPlayer(playerRoaster) {
+    let player = {};
+    this.print(`\n\n${playerRoaster} get ready!\n=================\n`);
+    const { name, isShipHorizontal } = await this.ask(
+      userQuestions.PREFERENCES
+    );
+    player = new Player({ name, isShipHorizontal });
+    this.print('\n' + player.board.getPrintableGrid());
+    return player;
   }
 }
 

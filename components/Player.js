@@ -6,10 +6,10 @@ const Board = require('./Board');
 const Ship = require('./Ship');
 
 class Player {
-  constructor() {
-    this.name = '';
+  constructor({ name, isShipHorizontal }) {
+    this.name = name;
     this.hitShots = 0;
-    this.isShipHorizontal = true;
+    this.isShipHorizontal = isShipHorizontal;
     this.isWon = false;
     this.board = new Board(settings.WIDTH, settings.HEIGHT);
   }
@@ -20,15 +20,7 @@ class Player {
   }
 
   async setUp() {
-    await this.setPlayerPreferences();
-    console.log('\n' + this.board.getPrintableGrid());
     await this.askShipLocation();
-  }
-
-  async setPlayerPreferences() {
-    const { name, orientation } = await prompts(userQuestions.PREFERENCES);
-    this.name = name;
-    this.isShipHorizontal = orientation;
   }
 
   async askShipLocation() {
