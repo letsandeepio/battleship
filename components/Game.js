@@ -15,35 +15,6 @@ class Game {
     this.ask = ask;
   }
 
-  togglePlayers() {
-    this.currentPlayer =
-      this.currentPlayer === this.player1 ? this.player2 : this.player1;
-    this.targetPlayer =
-      this.targetPlayer === this.player1 ? this.player2 : this.player1;
-  }
-
-  isGameOver() {
-    return this.player1.isWon || this.player2.isWon;
-  }
-
-  //places the ship on the player's board
-  // if validation flag is passed, just return true or false based on if ship can be placed on the board or not
-  shipPlacement(value, player, validation = false) {
-    const { x, y } = convert.toCoordinates(value);
-    //invalid input
-    if (validation) {
-      if (isNaN(x) || isNaN(y)) return false;
-    }
-    const ship = new Ship(
-      { x, y },
-      settings.SHIP_LENGTH,
-      player.isShipHorizontal
-    );
-    //ship is not placeable on the board
-    if (validation) return player.board.isShipPlaceable(ship);
-    player.board.placeShip(ship);
-  }
-
   async start() {
     this.print(
       '\nWelcome to the battleShip Wars! This is a interactive two player game.'
@@ -66,6 +37,7 @@ class Game {
   async setupPlayer(playerRoaster) {
     let player = {};
 
+    //board settings
     const boardWidth = settings.WIDTH;
     const boardHeight = settings.HEIGHT;
 
@@ -75,10 +47,12 @@ class Game {
       userQuestions.PREFERENCES
     );
 
+    //intialize the player object
     player = new Player({ name, isShipHorizontal, boardWidth, boardHeight });
 
     this.print('\n' + player.board.getPrintableGrid());
 
+    //ask user for the location to place the ship
     const shipLocationWithValidation = {
       ...userQuestions.SHIP_LOCATION,
       validate: (value) =>
@@ -86,10 +60,41 @@ class Game {
           ? `Please enter valid target cell coordinates (it's 3 cell wide). e.g. a1`
           : true
     };
-
     const { shipLocation } = await this.ask(shipLocationWithValidation);
+
+    //place the ship on the player board
     this.shipPlacement(shipLocation, player);
     return player;
+  }
+
+  togglePlayers() {
+    this.currentPlayer =
+      this.currentPlayer === this.player1 ? this.player2 : this.player1;
+    this.targetPlayer =
+      this.targetPlayer === this.player1 ? this.player2 : this.player1;
+  }
+
+  isGameOver() {
+    return this.player1.isWon || this.player2.isWon;
+  }
+
+  //places the ship on the player's board
+  // if validation flag is passed, just return true or false based on if ship can be placed on the board or not
+  shipPlacement(value, player, validation = false) {
+    // convert input to coordinates ( e.g. a1 > 0,0)
+    const { x, y } = convert.toCoordinates(value);
+    //invalid input
+    if (validation) {
+      if (isNaN(x) || isNaN(y)) return false;
+    }
+    const ship = new Ship(
+      { x, y },
+      settings.SHIP_LENGTH,
+      player.isShipHorizontal
+    );
+    //check if ship is not placeable on the board or not
+    if (validation) return player.board.isShipPlaceable(ship);
+    player.board.placeShip(ship);
   }
 
   async newRound() {
@@ -102,6 +107,7 @@ class Game {
   }
 
   async requestPlayerShot() {
+    //ask user for input for registering the shot & validates it
     const shotWithValidation = {
       ...userQuestions.SHOT,
       validate: (value) =>
@@ -109,15 +115,18 @@ class Game {
           ? `Please enter valid target cell coordinates. e.g. a1`
           : true
     };
-
     const { shotLocation } = await this.ask(shotWithValidation);
-
+    // convert input to coordinates ( e.g. a1 > 0,0)
     const coords = convert.toCoordinates(shotLocation);
+    // send the shot to the player's board and get back the status & message
     const { status, message } = this.targetPlayer.board.registerShot(coords);
+    // if shot is hit
     if (status === shotStatus.HIT) this.currentPlayer.hitShotFired();
+    // print the message  if shot is hit, missed or double hit
     this.print(`\n${message}\n`);
   }
 
+  //check if shot entered is valid or not
   isFireShotValid(value) {
     const { x, y } = convert.toCoordinates(value);
     return (
