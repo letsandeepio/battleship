@@ -51,6 +51,11 @@ See the above “deployment” for running the game without needing to install i
 3. `npm install`
 4. `node index.js`
 
+### Testing
+
+- to start Jest in watch mode type `npm test`
+- to collect test coverage type `npm test:coverage`
+
 ## Copyright
 
 MIT License 2020, Sandeep Kumar Chopra

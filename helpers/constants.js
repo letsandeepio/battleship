@@ -11,9 +11,9 @@ const shotStatus = {
 };
 
 const userMessages = {
-  MISSED: 'Uh ho! You missed the shot :(',
-  HIT: 'Good Job! You succesfully hit the enemy ship!',
-  DOUBLE_HIT: 'Uh ho! You have hit that spot already!'
+  MISSED: '❌ Uh ho! You missed the shot :(',
+  HIT: '✅ Good Job! You succesfully hit the enemy ship! 🔥',
+  DOUBLE_HIT: ' 🏴‍☠️ Uh ho! You have hit that spot already!'
 };
 
 const userQuestions = {
@@ -23,7 +23,7 @@ const userQuestions = {
       name: 'name',
       message: 'Please type your name?',
       validate: (value) =>
-        !value ? 'Please enter a valid name to continue' : true
+        !value ? 'Please enter a valid name to continue.' : true
     },
     {
       type: 'select',
