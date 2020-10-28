@@ -8,13 +8,14 @@ class Board {
     this.grid = generateGrid(width, height);
   }
 
-  getPrintableGrid(isEndGame = false) {
+  //return the printable version of the ship
+  getPrintableGrid(revealShips = false) {
     let printedGrid = '';
     printedGrid += generateTopRow(this.width) + '\n';
     for (let i = 0; i < this.height; i++) {
       let row = i + 1 + ' ';
       for (let cell of this.grid[i]) {
-        if (!isEndGame && cell === 'O') {
+        if (!revealShips && cell === 'O') {
           row += '- ';
         } else {
           row += cell + ' ';
@@ -25,6 +26,7 @@ class Board {
     return printedGrid;
   }
 
+  //regiser the shot on the board
   registerShot({ x, y }) {
     switch (true) {
       case this.grid[y][x] === '-':
@@ -47,6 +49,7 @@ class Board {
     }
   }
 
+  //check if given x,y is valid for the board or not
   isValidCoordinate({ x, y }) {
     if (x < 0 || x >= this.width) {
       return false;
@@ -57,6 +60,7 @@ class Board {
     return true;
   }
 
+  //check if given ship can be placed on the board or not
   isShipPlaceable(ship) {
     for (let coord of ship.coords) {
       if (!this.isValidCoordinate(coord)) {
@@ -66,10 +70,7 @@ class Board {
     return true;
   }
 
-  updateCell({ x, y }, toUpdate) {
-    this.grid[y][x] = toUpdate;
-  }
-
+  //places the ship on the grid
   placeShip(ship) {
     if (this.isShipPlaceable(ship)) {
       for (let coord of ship.coords) {
@@ -77,8 +78,15 @@ class Board {
       }
     }
   }
+
+  //utitlity function to update the cell inside the gril
+  updateCell({ x, y }, toUpdate) {
+    this.grid[y][x] = toUpdate;
+  }
 }
 
+//helper functions
+// to generate X*Y grid
 const generateGrid = (width, height) => {
   let grid = [];
   for (let i = 0; i < height; i++) {
@@ -90,10 +98,11 @@ const generateGrid = (width, height) => {
   return grid;
 };
 
+//to generate the top row containing alphabets
 const generateTopRow = (width) => {
   let topRow = '  ';
   for (let i = 0; i < width; i++) {
-    topRow += convert.getAlpha(i) + ' ';
+    topRow += convert.getAlpha(i) + ' '; //convert numbers to alphabet 0 => a , 1 =>  b etc
   }
   return topRow;
 };

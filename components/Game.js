@@ -128,6 +128,7 @@ class Game {
 
   //check if shot entered is valid or not
   isFireShotValid(value) {
+    // convert input to coordinates ( e.g. a1 > 0,0)
     const { x, y } = convert.toCoordinates(value);
     return (
       isNaN(x) ||
