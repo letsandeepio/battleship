@@ -49,7 +49,12 @@ See the above “deployment” for running the game without needing to install i
 1. `git clone git@github.com:letsandeepio/battleship.git`
 2. `cd battleship`
 3. `npm install`
-4. `node index.js`
+
+Finally, the the below from the root folder of the object to run the game
+
+4. `./bin/battleship`
+
+Note: If you get permission error, please use following command to grant the relevant permissions: `chmod +x bin/battleship`
 
 ### Testing
 
