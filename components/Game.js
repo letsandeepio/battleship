@@ -37,7 +37,9 @@ class Game {
   }
 
   async start() {
-    this.print('\nWelcome to the battleShip Wars! This is a two player game.');
+    this.print(
+      '\nWelcome to the battleShip Wars! This is a interactive two player game.'
+    );
     this.player1 = await this.setupPlayer('Player 1');
     this.player2 = await this.setupPlayer('Player 2');
 

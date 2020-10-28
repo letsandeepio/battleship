@@ -1,7 +1,7 @@
 const printTitle = require('./printTitle');
 
 describe('testing Player component ', () => {
-  test('successfully initialize a player', async () => {
+  test('successfully print game title', async () => {
     const title = await printTitle();
     expect(typeof title).toBe('string');
   });
