@@ -22,7 +22,14 @@
   },
   "jest": {
     "collectCoverage": true,
-    "coverageDirectory": "./.reports"
+    "coverageDirectory": "./.reports",
+    "verbose": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/.reports/**"
+    ]
   },
   "dependencies": {
     "chalk": "^4.1.0",

@@ -1,8 +1,9 @@
 const prompts = require('prompts');
-const Board = require('./Board');
 const settings = require('../helpers/constants');
-const Ship = require('./Ship');
 const convert = require('../helpers/convertToAlphabet');
+
+const Board = require('./Board');
+const Ship = require('./Ship');
 
 class Player {
   constructor() {
@@ -10,6 +11,7 @@ class Player {
     this.shotsFired = 0;
     this.hitShots = 0;
     this.isShipHorizontal = true;
+    this.isWon = false;
     this.board = {};
   }
 
@@ -19,6 +21,7 @@ class Player {
 
   hitShot() {
     this.hitShots += 1;
+    if (this.hitShots === 3) this.isWon = true;
   }
 
   async setUp() {
@@ -26,7 +29,6 @@ class Player {
     this.setupPlayerBoard();
     console.log('\n' + this.board.getPrintableGrid());
     await this.askShipLocation();
-    console.log('\n' + this.board.getPrintableGrid());
   }
 
   setupPlayerBoard() {
@@ -67,7 +69,6 @@ class Player {
           ? `Please enter valid coordinates.`
           : true
     });
-    console.log(response.value);
     this.shipPlacement(response.value);
   }
 
@@ -82,9 +83,26 @@ class Player {
     this.board.placeShip(ship);
   }
 
-  requestShot(enemy) {
-    console.log(response.value);
-    this.shipPlacement(response.value);
+  async requestShot(enemy) {
+    const response = await prompts({
+      type: 'text',
+      name: 'value',
+      message: 'Please enter the target you would like to attack?',
+      validate: (value) =>
+        this.validfireShot(value, enemy)
+          ? `Please enter valid coordinates.`
+          : true
+    });
+
+    const coords = convert.toCoordinates(response.value);
+    const { status, message } = enemy.board.fireShot(coords);
+    if (status === 'hit') this.hitShot();
+    console.log(`\n${message}\n`);
+  }
+
+  validfireShot(value, enemy) {
+    const coords = convert.toCoordinates(value);
+    return !enemy.board.isValidCoordinate(coords);
   }
 }
 

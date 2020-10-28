@@ -7,13 +7,17 @@ class Board {
     this.grid = generateGrid(width, height);
   }
 
-  getPrintableGrid() {
+  getPrintableGrid(isEndGame = false) {
     let printedGrid = '';
     printedGrid += generateTopRow(this.width) + '\n';
     for (let i = 0; i < this.height; i++) {
       let row = i + 1 + ' ';
       for (let cell of this.grid[i]) {
-        row += cell + ' ';
+        if (!isEndGame && cell === 'O') {
+          row += '- ';
+        } else {
+          row += cell + ' ';
+        }
       }
       printedGrid += row + '\n';
     }
@@ -27,27 +31,22 @@ class Board {
           status: 'invalid',
           message: 'invalid attack'
         };
-      case this.grid[x][y] === '-':
+      case this.grid[y][x] === '-':
         this.updateCell({ x, y }, '*');
         return {
           status: 'miss',
           message: 'missed the target'
         };
-      case this.grid[x][y] === 'O':
+      case this.grid[y][x] === 'O':
         this.updateCell({ x, y }, '!');
         return {
           status: 'hit',
           message: 'successfully hit the target'
         };
-      case this.grid[x][y] === '!' || this.grid[x][y] === '*':
+      case this.grid[y][x] === '!' || this.grid[y][x] === '*':
         return {
           status: 'double hit',
           message: 'already hit this spot before'
-        };
-      default:
-        return {
-          status: 'failed',
-          message: 'error firing shot'
         };
     }
   }
@@ -72,7 +71,7 @@ class Board {
   }
 
   updateCell({ x, y }, toUpdate) {
-    this.grid[x][y] = toUpdate;
+    this.grid[y][x] = toUpdate;
   }
 
   placeShip(ship) {

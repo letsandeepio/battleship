@@ -1,4 +1,5 @@
 const Player = require('./Player');
+const prompts = require('prompts');
 
 class Game {
   constructor() {
@@ -6,7 +7,6 @@ class Game {
     this.player2 = {};
     this.currentPlayer = {};
     this.targetPlayer = {};
-    this.gameover = false;
   }
 
   isGameOver() {
@@ -14,32 +14,30 @@ class Game {
   }
 
   async start() {
-    console.log('\nWelcome to the battleShip game! This is a two player game.');
+    console.log('\nWelcome to the battleShip Wars! This is a two player game.');
     await this.setupPlayers();
     console.log('\n\nGood Job! Time to fire up the cannons!\n');
     this.currentPlayer = this.player1;
     this.targetPlayer = this.player2;
-    while (!this.gameover) {
-      this.requestShots();
-      this.gameover = true;
+    while (!this.isGameOver()) {
+      await this.requestShots();
     }
   }
 
-  requestShots() {
+  async requestShots() {
     console.log('\n===========new round==========\n');
-    console.log(`${this.currentPlayer.name} get ready its your turn!`);
-    const response = await prompts({
-      type: 'text',
-      name: 'value',
-      message: 'Please enter the target you would like to attack?',
-      validate: (value) =>
-        !this.shipPlacement(value, true)
-          ? `Please enter valid coordinates.`
-          : true
-    });
+    console.log(`${this.currentPlayer.name} get ready its your turn!\n`);
+    await this.currentPlayer.requestShot(this.targetPlayer);
+    console.log(`~~~~~~${this.targetPlayer.name}'s Board~~~\n`);
+    console.log(this.targetPlayer.board.getPrintableGrid());
+    this.togglePlayers();
+  }
 
-    console.log()
-
+  togglePlayers() {
+    this.currentPlayer =
+      this.currentPlayer === this.player1 ? this.player2 : this.player1;
+    this.targetPlayer =
+      this.targetPlayer === this.player1 ? this.player2 : this.player1;
   }
 
   async setupPlayers() {
