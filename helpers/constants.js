@@ -21,8 +21,9 @@ const userQuestions = {
     {
       type: 'text',
       name: 'name',
-      message: 'What is your name?',
-      validate: (value) => (!value ? 'Please enter a name to continue' : true)
+      message: 'Please type your name?',
+      validate: (value) =>
+        !value ? 'Please enter a valid name to continue' : true
     },
     {
       type: 'select',
@@ -37,12 +38,13 @@ const userQuestions = {
   SHIP_LOCATION: {
     type: 'text',
     name: 'shipLocation',
-    message: 'Please enter the target you would like to place your ship?'
+    message:
+      'Please enter target cell you would like to place your ship? e.g. a1, d5 etc'
   },
   SHOT: {
     type: 'text',
     name: 'shotLocation',
-    message: 'Please enter the target you would like to attack?'
+    message: 'Please enter the target cell you would like to attack?a1, d5 etc'
   }
 };
 
