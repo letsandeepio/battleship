@@ -1,8 +1,6 @@
 const chalk = require('chalk');
 
-const Ship = require('./components/Ship');
 const Game = require('./components/Game');
-const Board = require('./components/Board');
 const prinTitle = require('./helpers/printTitle');
 
 const prompts = require('prompts');

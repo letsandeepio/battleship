@@ -19,7 +19,7 @@ describe('testing Game component ', () => {
   test('successfully start a game', async () => {
     const game = new Game({ print: mockPrint, ask: mockAsk });
     await game.start();
-    expect(mockPrint.mock.calls.length).toBe(36);
+    expect(mockPrint.mock.calls.length).toBe(42);
     expect(mockAsk.mock.calls.length).toBe(10);
   });
 });

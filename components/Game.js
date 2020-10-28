@@ -49,6 +49,8 @@ class Game {
     while (!this.isGameOver()) {
       await this.newRound();
     }
+
+    this.printWinner();
   }
 
   async newRound() {
