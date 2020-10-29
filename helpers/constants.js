@@ -11,9 +11,9 @@ const shotStatus = {
 };
 
 const userMessages = {
-  MISSED: '❌ Uh ho! You missed the shot :(',
+  MISSED: '❌ Uh Oh! You missed the shot :(',
   HIT: '✅ Good Job! You succesfully hit the enemy ship! 🔥',
-  DOUBLE_HIT: ' 🏴‍☠️ Uh ho! You have hit that spot already!'
+  DOUBLE_HIT: ' 🏴‍☠️ Uh Oh! You have hit that spot already!'
 };
 
 const userQuestions = {
